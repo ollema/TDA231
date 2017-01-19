@@ -24,6 +24,7 @@ scatter(data)
 clf
 clc
 clear
+format compact
 dataSet = load('dataset0.txt');
 covariance = cov(dataSet);
 correlation = corrcoef(dataSet);
@@ -39,18 +40,38 @@ subplot(2,2,1)
 imagesc(covariance)
 colorbar
 title('\fontsize{10pt}\rm{Covariance of dataset0 - }\it{\bf{X}}')
+xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 
 subplot(2,2,2)
 imagesc(correlation)
 colorbar
 title('\fontsize{10pt}\rm{Correlation of dataset0 - }\it{\bf{X}}')
+xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 
 subplot(2,2,3)
 imagesc(scaledCovar)
 colorbar
 title('\fontsize{10pt}\rm{Covariance of scaled dataset0 - }\it{\bf{Y}}')
+xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 
 subplot(2,2,4)
 imagesc(scaledCorr)
 colorbar
+title('\fontsize{10pt}\rm{Correlation of scaled dataset0 - }\it{\bf{Y}}')
+xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+
+[min, index] = min(scaledCovar(:));
+[I_row, I_col] = ind2sub(size(scaledCovar),index);
+figure
+
+subplot(1,2,1)
+scatter(scaledSet(:,I_col), scaledSet(:,I_row))
+title('\fontsize{10pt}\rm{Correlation of scaled dataset0 - }\it{\bf{Y}}')
+
+subplot(1,2,2)
+scatter(scaledSet(:,8), scaledSet(:,1))
 title('\fontsize{10pt}\rm{Correlation of scaled dataset0 - }\it{\bf{Y}}')
