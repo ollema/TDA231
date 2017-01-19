@@ -1,24 +1,26 @@
 %%
 % Problem 2.1
-f=@(x)function_p21(x);
-ezplot(@(x,y)f([x,y]'),1)
-%t=linspace(-2,2,100);
-%[X,Y]=meshgrid(t,t);
-%Z=f([X,Y]')
+clf
+hold on
+mu = [1 1];
+sigma = [0.1 -0.05; -0.05 0.2];
+data = generateData(mu, sigma, 1000);
+inside=(function_p21(data)-3<0);
+outside=(function_p21(data)-3>0);
+pointSize=10;
+scatter(data(1,inside),data(2,inside),pointSize,'b','filled');
+scatter(data(1,outside),data(2,outside),pointSize,'k','filled');
 
 xLow=-0.5;
 xHigh=2.5;
 yLow=-0.5;
 yHigh=2.5;
 f=@(x,y)function_p21([x,y]');
-fcontour(f,[xLow xHigh yLow yHigh],'LevelList',[1,2,3])
-
-hold on
-mu = [1 1];
-sigma = [0.1 -0.05; -0.05 0.2];
-data = generate_data(mu, sigma, 1000);
-
-scatter(data)
+fcontour(f,[xLow xHigh yLow yHigh],'LevelList',[1,2,3],'LineColor','r','LineWidth',1.5)
+clc
+title(strcat(num2str(nnz(outside)),' points outside f(x,3)=0'))
+xlabel('x')
+ylabel('y')
 %%
 % Problem 2.2
 clf
