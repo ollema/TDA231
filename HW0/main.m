@@ -1,10 +1,11 @@
+xLow=-0.5;
+xHigh=2.5;
+yLow=-0.5;
+yHigh=2.5;
+f=@(x,y)function_p21([x,y]');
+fcontour(f,[xLow xHigh yLow yHigh],'LevelList',[1,2,3])
 
-f=@(x)function_p21(x);
-ezplot(@(x,y)f([x,y]'),1)
-%t=linspace(-2,2,100);
-%[X,Y]=meshgrid(t,t);
-%Z=f([X,Y]')
-
+%%
 hold on
 mu = [1 1];
 sigma = [0.1 -0.05; -0.05 0.2];
