@@ -41,39 +41,38 @@ scaledCorr = corrcoef(scaledSet);
 hold on
 colormap jet
 
-
 subplot(2,2,1)
 imagesc(covariance)
 colorbar
-title('Covariance of scaled dataset - X')
+title('Covariance of dataset0 - X')
 xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 
 subplot(2,2,2)
 imagesc(correlation)
 colorbar
-title('Correlation of scaled dataset - X')
+title('Correlation of dataset0 - X')
 xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 
 subplot(2,2,3)
 imagesc(scaledCovar)
 colorbar
-title('Covariance of scaled dataset - Y')
+title('Covariance of scaled dataset0 - Y')
 xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 
 subplot(2,2,4)
 imagesc(scaledCorr)
 colorbar
-title('Correlation of scaled dataset - Y')
+title('Correlation of scaled dataset0 - Y')
 xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
-
 
 [min, index] = min(scaledCovar(:));
 [I_row, I_col] = ind2sub(size(scaledCovar),index);
 
+%Problem P2.2b
 figure
 
 subplot(1,2,1)
@@ -83,3 +82,4 @@ title('Correlation of feature 8 and feature 12')
 subplot(1,2,2)
 scatter(scaledSet(:,6), scaledSet(:,3),10,'b','filled');
 title('Correlation of feature 6 and feature 3')
+
