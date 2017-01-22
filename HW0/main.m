@@ -19,8 +19,7 @@ warning('off','all')%to turn of a wrongly produced performance error
 f=@(x,y)function_p21([x,y]');
 fcontour(f,[xLow xHigh yLow yHigh],'LevelList',[1,2,3],'LineColor','r','LineWidth',1.5)
 warning('on','all')
-title('\fontsize{10pt}\rm{Points outside level curve f(x,3)=0}\it{\bf{Y}}')
-title(strcat(num2str(nnz(outside)),' '))
+title(strcat(num2str(nnz(outside)),' Points outside level curve f(x,3)=0'));
 xlabel('x')
 ylabel('y')
 
@@ -47,22 +46,22 @@ subplot(2,2,1)
 imagesc(covariance)
 colorbar
 title('Covariance of dataset0 - X')
-xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
-yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+xticks(1:size(covariance,2));
+yticks(1:size(covariance,2));
 
 subplot(2,2,2)
 imagesc(correlation)
 colorbar
 title('Correlation of dataset0 - X')
-xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
-yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+xticks(1:size(correlation,2));
+yticks(1:size(correlation,2));
 
 subplot(2,2,3)
 imagesc(scaledCovar)
 colorbar
 title('Covariance of scaled dataset0 - Y')
-xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
-yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+xticks(1:size(correlation,2));
+yticks(1:size(correlation,2));
 
 subplot(2,2,4)
 imagesc(scaledCorr)
@@ -73,7 +72,7 @@ yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
 
 [min, index] = min(scaledCovar(:));
 [I_row, I_col] = ind2sub(size(scaledCovar),index);
-
+%%
 %Problem P2.2b
 figure
 
