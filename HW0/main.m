@@ -15,10 +15,12 @@ xLow=-0.5;
 xHigh=2.5;
 yLow=-0.5;
 yHigh=2.5;
+warning('off','all')%to turn of a wrongly produced performance error
 f=@(x,y)function_p21([x,y]');
 fcontour(f,[xLow xHigh yLow yHigh],'LevelList',[1,2,3],'LineColor','r','LineWidth',1.5)
-clc
-title(strcat(num2str(nnz(outside)),' points outside f(x,3)=0'))
+warning('on','all')
+title('\fontsize{10pt}\rm{Points outside level curve f(x,3)=0}\it{\bf{Y}}')
+title(strcat(num2str(nnz(outside)),' '))
 xlabel('x')
 ylabel('y')
 %%
