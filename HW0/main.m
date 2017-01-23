@@ -60,15 +60,15 @@ subplot(2,2,3)
 imagesc(scaledCovar)
 colorbar
 title('Covariance of scaled dataset0 - Y')
-xticks(1:size(correlation,2));
-yticks(1:size(correlation,2));
+xticks(1:size(scaledCovar,2));
+yticks(1:size(scaledCovar,2));
 
 subplot(2,2,4)
 imagesc(scaledCorr)
 colorbar
 title('Correlation of scaled dataset0 - Y')
-xticks([1 2 3 4 5 6 7 8 9 10 11 12]);
-yticks([1 2 3 4 5 6 7 8 9 10 11 12]);
+xticks(1:size(scaledCorr,2));
+yticks(1:size(scaledCorr,2));
 
 [min, index] = min(scaledCovar(:));
 [I_row, I_col] = ind2sub(size(scaledCovar),index);
