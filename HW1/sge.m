@@ -13,4 +13,7 @@ function [mu, sigma] = sge(x)
 % sigma : Estimated standard deviation of the dataset (number)                 
 %
 
-YOUR CODE GOES HERE
+    mu=mean(x);
+    np=numel(x);
+    sigma=sqrt((1/np)*sum(sum(x.*x)));
+end
