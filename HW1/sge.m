@@ -1,4 +1,4 @@
-function [mu, sigma] = sge(x)
+function [mu_final, sigma_final] = sge(x)
 %
 % SGE Mean and variance estimator for spherical Gaussian distribution                               
 %
@@ -11,9 +11,14 @@ function [mu, sigma] = sge(x)
 %
 % mu    : Estimated mean of the dataset [mu_1 mu_2 ... mu_p] 
 % sigma : Estimated standard deviation of the dataset (number)                 
-%
-
-    mu=mean(x);
-    np=numel(x);
-    sigma=sqrt((1/np)*sum(sum(x.*x)));
+%   
+    X=x';
+    mu=mean(X,2);
+        
+    nSamples=size(X,2);
+    Z=X-repmat(mu,1,nSamples);
+    np=numel(X);
+    
+    sigma_final=sqrt((1/np)*sum(sum(Z.*Z)));
+    mu_final=mu';    
 end
