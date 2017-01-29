@@ -27,3 +27,6 @@ figure(2)
 hold on
 plot(t,priorData2,'b');
 plot(t,posteriorData2,'r');
+
+%%
+BF = BayesFactor(alphaHyper1, alphaHyper2, betaHyper1, betaHyper2)
