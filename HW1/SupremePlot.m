@@ -7,15 +7,17 @@ function [] = SupremePlot(data)
     colorVector=['r','m','b'];
     CircleDataContainer=GenerateCircleData(radii,mu);
     nCircles=numel(CircleDataContainer);
+    plots = zeros(1, nCircles);
+    
     for i=1:nCircles
         circleCoord=CircleDataContainer{i};
         nPointsOutside=nnz(distancesFromCenter>radii(i));
-        legendText=['Points outside',' ',num2str(i),'\sigma',...
-            ' ',num2str(nPointsOutside)];
-        plot(circleCoord(:,1),circleCoord(:,2),colorVector(i),...
+        legendText=['Points outside ',num2str(i),'\sigma: ',...
+            num2str(100*nPointsOutside/size(data,1)),'%'];
+        plots(i) = plot(circleCoord(:,1),circleCoord(:,2),colorVector(i),...
             'LineWidth',1.5,'DisplayName',legendText);
     end
-    legend('show');
+    legend(plots);
     hold off
 end
 
