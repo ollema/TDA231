@@ -1,6 +1,6 @@
 function [ out ] = BayesFactor(aah, abh, bah, bbh)
-bq = bbh/bah;
-aq = (abh + 1)/(aah + 1);
-lngq = gammaln(abh)/gammaln(aah);
-out = bq * aq * exp((aah - abh)\(aah*abh + aah + abh + 1) + lngq);
+    x1=abh-aah;
+    x2=log(bbh)+gammaln(abh)+(aah+1)*log(aah+1)
+    x3=log(bah)+gammaln(aah)+(abh+1)*log(abh+1)
+    out=exp(x1+x2-x3);
 end
