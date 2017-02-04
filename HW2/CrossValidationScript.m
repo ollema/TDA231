@@ -1,4 +1,4 @@
-nFractions=2;
+nFractions=5;
 nDataX1=size(x1,1);
 nDataX2=size(x2,1);
 

@@ -6,14 +6,21 @@ dataDigit5=data(:,:,5)';%since the format of the data is different in 2.1
 dataDigit8=data(:,:,8)';
 
 %% a)
-
+clc
 mu1=mean(dataDigit5);
 mu2=mean(dataDigit8);
 classPredicitions=new_classifier([dataDigit5;dataDigit8],mu1,mu2);
-class=[(1:size(dataDigit5,1))';-(1:size(dataDigit8,1))'];
-percentageError=sum(classPredicitions==class)/(numel(class))
+class=[ones(size(dataDigit5,1),1);-ones(size(dataDigit8,1),1)];
+percentageError=nnz(classPredicitions~=class)/(numel(class));
 
-%% b)
+%% Raw data d1)
+clc
+x1=dataDigit5;
+x2=dataDigit8;
+run CrossValidationScript.m
+%
+
+%% new FeatureVector d2)
 clc
 format long
 dataDigit5=dataDigit5/255;
@@ -32,3 +39,12 @@ end
 x1=featureVectors5;
 x2=featureVectors8;
 run CrossValidationScript
+
+%% display boundary for new_classifier
+mu1=[1,2];
+mu2=[-1,1];
+hold on
+plot(mu1(1),mu1(2),'*');
+plot(mu2(1),mu2(2),'*');
+ezplot(@(x,y)new_classifier([x,y],mu1,mu2));
+
