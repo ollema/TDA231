@@ -27,7 +27,7 @@ for i=1:nFractions
     
     verificationData=[verificationDataX1;verificationDataX2];
     predictionClass1=new_classifier(verificationData,mu1,mu2);
-    predictionClass2=sph_bayes_vectorWrapper(verificationData,mu1,mu2,cov1,cov2);
+    [~,~,predictionClass2] =sph_bayes(verificationData,mu1,mu2,cov1,cov2);
     classes=[classX1;classX2];
     percentageError1=percentageError1+nnz(classes==predictionClass1)/(nFractions*size(classes,1));
     percentageError2=percentageError2+nnz(classes==predictionClass2)/(nFractions*size(classes,1));

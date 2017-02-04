@@ -6,6 +6,6 @@ mu1=[1,0];
 mu2=[3,0];
 cov1=eye(2);
 cov2=cov1;
-B=sph_bayes_vectorWrapper(A,mu1,mu2,cov1,cov2);
+[~,~, B] = sph_bayes(A,mu1,mu2,cov1,cov2);
 C=new_classifier(A,mu1,mu2);
 sum(B==C)
