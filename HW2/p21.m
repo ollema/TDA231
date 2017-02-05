@@ -9,3 +9,4 @@ format long
 x1 = x((y > 0), :);
 x2 = x((y < 0), :);
 run CrossValidationScript
+clear all
