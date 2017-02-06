@@ -1,7 +1,7 @@
 function [p1, p2, Ytest] = sph_bayes(xTest, mu1, mu2, sigma1, sigma2)
 % calculate "likelihoods"
 pre1 = mvnpdf(xTest, mu1, sigma1*eye(size(mu1,2)));
-pre2 = mvnpdf(xTest, mu2, sigma2*eye(size(mu1,2)));
+pre2 = mvnpdf(xTest, mu2, sigma2*eye(size(mu2,2)));
 
 % return the goods
 p1 = pre1./(pre1 + pre2);
