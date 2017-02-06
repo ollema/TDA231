@@ -8,5 +8,6 @@ y = data.y;
 format long
 x1 = x((y > 0), :);
 x2 = x((y < 0), :);
-run CrossValidationScript
+KFoldCrossValidation(@(x,y,z)sph_bayes(x,y,z),x1,x2,5)
+KFoldCrossValidation(@(x,y,z)new_classifier(x,y,z),x1,x2,5)
 clear all
