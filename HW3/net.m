@@ -129,13 +129,20 @@ function res = grad(model, data, wd_coefficient)
   log_class_prob = logsoftmax(class_input);
   class_prob = exp(log_class_prob); 
   % class_prob is the model output.
-  
-  %% TODO - Write code here ---------------
 
-    % Right now the function just returns a lot of zeros. Your job is to change that.
-    res.input_to_hid = model.input_to_hid * 0;
-    res.hid_to_class = model.hid_to_class * 0;
+  % TODO - Write code here ---------------
+  dEdz=mean(class_prob-data.targets,2);
+  delta2=dEdz;
+  res.hid_to_class=delta2*(hid_output')+model.hid_to_class*wd_coefficient;
+                                               
+  delta1=((model.hid_to_class')*delta2).*( logistic(hid_input).*(1-logistic(hid_input)) );
+                                         %^ is the derivative of act_fun
+  res.input_to_hid=delta1*(data.inputs')+model.input_to_hid*wd_coefficient; 
+    
+%  res.hid_to_class = model.hid_to_class*0;
+%  res.input_to_hid = model.input_to_hid*0;
   % ---------------------------------------
+  
 end
 
 %% Activation functions
