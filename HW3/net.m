@@ -130,17 +130,28 @@ function res = grad(model, data, wd_coefficient)
   class_prob = exp(log_class_prob); 
   % class_prob is the model output.
 
+  %  res.hid_to_class = model.hid_to_class*0;
+  %  res.input_to_hid = model.input_to_hid*0;
+  
   % TODO - Write code here ---------------
-  dEdz=mean(class_prob-data.targets,2);
-  delta2=dEdz;
-  res.hid_to_class=delta2*(hid_output')+model.hid_to_class*wd_coefficient;
+  %%%%%%%%%%%%%%% OLD
+%  dEdz=mean(class_prob-data.targets,2);
+%  delta2=dEdz;
+%  res.hid_to_class=delta2*(hid_output')+model.hid_to_class*wd_coefficient;
                                                
-  delta1=((model.hid_to_class')*delta2).*( logistic(hid_input).*(1-logistic(hid_input)) );
+%  delta1=((model.hid_to_class')*delta2).*( logistic(hid_input).*(1-logistic(hid_input)) );
                                          %^ is the derivative of act_fun
-  res.input_to_hid=delta1*(data.inputs')+model.input_to_hid*wd_coefficient; 
+%  res.input_to_hid=delta1*(data.inputs')+model.input_to_hid*wd_coefficient; 
+  
+  %%%%%%%%%%%%%%% NEW
+  [numClasses,numInputs]=size(class_prob);
+  delta2 = (class_prob - data.targets)/(numInputs);
+  res.hid_to_class = delta2*hid_output'+model.hid_to_class*wd_coefficient;
+
+  dAct_fun = (hid_output - hid_output.^2);
+  delta1 = (delta2'*model.hid_to_class)'.*dAct_fun;
+  res.input_to_hid = delta1*data.inputs'+model.input_to_hid * wd_coefficient;
     
-%  res.hid_to_class = model.hid_to_class*0;
-%  res.input_to_hid = model.input_to_hid*0;
   % ---------------------------------------
   
 end
