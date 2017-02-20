@@ -121,7 +121,6 @@ function res = grad(model, data, wd_coefficient)
 
   % The returned object is supposed to be exactly like parameter <model>, i.e. it has fields res.input_to_hid and res.hid_to_class. However, the contents of those matrices are gradients (d cost by d model parameter), instead of model parameters.
 
-
   % Forward propagation
   hid_input = model.input_to_hid * data.inputs; 
   hid_output = logistic(hid_input);
@@ -129,22 +128,9 @@ function res = grad(model, data, wd_coefficient)
   log_class_prob = logsoftmax(class_input);
   class_prob = exp(log_class_prob); 
   % class_prob is the model output.
-
-  %  res.hid_to_class = model.hid_to_class*0;
-  %  res.input_to_hid = model.input_to_hid*0;
   
-  % TODO - Write code here ---------------
-  %%%%%%%%%%%%%%% OLD
-%  dEdz=mean(class_prob-data.targets,2);
-%  delta2=dEdz;
-%  res.hid_to_class=delta2*(hid_output')+model.hid_to_class*wd_coefficient;
-                                               
-%  delta1=((model.hid_to_class')*delta2).*( logistic(hid_input).*(1-logistic(hid_input)) );
-                                         %^ is the derivative of act_fun
-%  res.input_to_hid=delta1*(data.inputs')+model.input_to_hid*wd_coefficient; 
-  
-  %%%%%%%%%%%%%%% NEW
-  [numClasses,numInputs]=size(class_prob);
+  % Back prop
+  [~,numInputs]=size(class_prob);
   delta2 = (class_prob - data.targets)/(numInputs);
   res.hid_to_class = delta2*hid_output'+model.hid_to_class*wd_coefficient;
 
