@@ -56,6 +56,9 @@ soft_margin = results(:,2);
 T = table(bias, soft_margin,'RowNames',BoxParams');
 disp(T)
 
+
+
+
 %% Problem 2.2
 % Load data
 clc, clear, clf
@@ -77,18 +80,18 @@ set(svm.FigureHandles{3}(1),'Color','k','Marker', 'o','MarkerSize',8, 'LineWidth
 %% b)
 clc
 % set parameters
-c = 1;
+c = 100;
 repetitions = 10;
-kernels = {'linear', 'quadratic', 'rbf'};
+kernels = {'kernels', 'quadratic', 'rbf'};
 methods = {'QP', 'SMO'};
 fold = 5;
 
 dataSize = size(x,1);
-results = zeros(3,4);
+results = zeros(size(kernels,2),4);
 
-for i = 1:3
+for i = 1:size(kernels,2)
     kernel = kernels{i};
-    for j = 1:2
+    for j = 1:26z6
         method = methods{j};
         mcr = 0;
         time = 0;
@@ -104,12 +107,11 @@ for i = 1:3
 end
 
 % output results
-KernelNames = {'linear'; 'quadratic'; 'rbf'};
 McrQP = results(:,1);
 McrSMO = results(:,2);
 TimeQP = results(:,3);
 TimeSMO = results(:,4);
-T = table(McrQP,TimeQP,McrSMO,TimeSMO,'RowNames',KernelNames);
+T = table(McrQP,TimeQP,McrSMO,TimeSMO,'RowNames',kernels');
 disp(c)
 disp(T)
 %% c)
