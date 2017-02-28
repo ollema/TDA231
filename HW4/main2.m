@@ -80,9 +80,9 @@ set(svm.FigureHandles{3}(1),'Color','k','Marker', 'o','MarkerSize',8, 'LineWidth
 %% b)
 clc
 % set parameters
-c = 100;
+c = 10;
 repetitions = 10;
-kernels = {'kernels', 'quadratic', 'rbf'};
+kernels = {'linear', 'quadratic', 'rbf'};
 methods = {'QP', 'SMO'};
 fold = 5;
 
@@ -91,7 +91,7 @@ results = zeros(size(kernels,2),4);
 
 for i = 1:size(kernels,2)
     kernel = kernels{i};
-    for j = 1:26z6
+    for j = 1:2
         method = methods{j};
         mcr = 0;
         time = 0;
