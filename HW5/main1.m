@@ -9,7 +9,7 @@ initClass = randi(1:k, 1, size(X,2));
 
 % profile on
 tic
-kmc = KMeansCluster(k, 'linear_kernel', X, initClass, 'UpdatePlot', true);
+kmc = KMeansCluster(k, 'linear_kernel', X, initClass, 'UpdatePlot', false, 'RetrieveData', 2);
 toc
 gscatter(X(1,:), X(2,:), kmc{2,1})
 
@@ -24,32 +24,65 @@ initClass = randi(1:k, 1, size(X,2));
 
 % profile on
 tic
-kmc = KMeansCluster(k, 'rbf_kernel', X, initClass, 'UpdatePlot', true);
+kmc = KMeansCluster(k, 'rbf_kernel', X, initClass, 'UpdatePlot', false);
 toc
 gscatter(X(1,:), X(2,:), kmc{2,1})
 
 % profile viewer
 
 
-%% Problem 1.2
+%% Problem 1.2 a)
 clc, clear
+k = 10;
 data = load('medium_100_10k.mat');
 vocab = data.vocab;
 wordemb = data.wordembeddings;
 
-[~, ~, ~, D] = kmeans(wordemb, 10);
- 
-%% a)
+[~, D, ~] = kmeansWrapper(wordemb, k, 1);
+
 clc
 [~, I] = sort(D);
 closestWords = vocab(I(1:10,:));
 disp(closestWords)
 
-%% b)
+%% b) 
 clc, clear D, clear closestWords, clear I
-[~, ~, ~, D] = kmeans(wordemb, 10, 'Replicates', 1);
 
-%%
+repetitions = 10;
+f = 0;
+
+for i=1:repetitions
+    % First run
+    [idx, ~, ~] = kmeansWrapper(wordemb, k, 1);
+
+    % Find the indices of members of the 'cavalry'-cluster 
+    % and calculate N_0
+    cav_index = find(strcmp(vocab, 'cavalry'));
+    cavCluster = idx(cav_index);
+    sizeCavCluster = nnz(idx == cavCluster);
+    N_0 = sizeCavCluster*(sizeCavCluster-1)/2;
+    elem_inds = find(idx == cavCluster); 
+    
+    % Second run
+    [idx, ~, ~] = kmeansWrapper(wordemb, k, 1);
+    
+    k = 10;
+    clusterFreq = zeros(1, k);
+
+    for j = elem_inds'
+        clusterFreq(idx(j)) = 1 + clusterFreq(idx(j));
+    end
+
+    N_1 = sum(clusterFreq.*(clusterFreq - 1)/2);
+    f = f + N_1/N_0;
+    fprintf('Finished run %.f \n', i)
+end
+
+f_avg = f/repetitions;
+
+fprintf('F = %.3f \n',f_avg)
+
+%% c)
 
 
 

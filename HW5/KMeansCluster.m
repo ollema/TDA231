@@ -10,8 +10,6 @@ function [out] = KMeansCluster(k,kernel,data, initClassAssignments,varargin)
             update = varargin{i+1};
         case 'RetrieveData'
             retrieveDataAt = varargin{i+1};
-        default
-            error('%s is not a valid argument name',varargin{i});
         end
     end
 
