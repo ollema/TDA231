@@ -1,23 +1,41 @@
-function [out,musAt] = KMeansCluster(k,kernel,data,...
-    initialClassAssignments,retrieveDataAt)
+function [out] = KMeansCluster(k,kernel,data, initClassAssignments,varargin)
+    % defaults
+    update = false;
+    retrieveDataAt = 0;
 
-    %define k
-    classAssignments=initialClassAssignments;
-    %distances=GetDistances(data,classAssignments,kernel);%implement
-    ClassAssignmentsChanged=true;
-    classAt=cell(0);
+    % parse arguments
+    for i=1:2:length(varargin)
+        switch varargin{i}
+        case 'UpdatePlot'
+            update = varargin{i+1};
+        case 'RetrieveData'
+            retrieveDataAt = varargin{i+1};
+        default
+            error('%s is not a valid argument name',varargin{i});
+        end
+    end
+
+    classAssignments=initClassAssignments;
+    ClassAssignmentsChanged = 0;
+    classAt = cell(0);
+    iterationCounter = 0;
     
-    iterationCounter=0;
-    while ClassAssignmentsChanged
+    while iterationCounter < 100 && ClassAssignmentsChanged == 0
+        if update == true
+            gscatter(data(1,:), data(2,:), classAssignments)
+            drawnow
+        end
+        
         iterationCounter = iterationCounter+1;       
-        distances=GetDistances(k,data,classAssignments,kernel);%calculate new distances
-        newClassAssignments = ClassAssignments(distances);%make new classAssignments
+        distances=GetDistances(k,data,classAssignments,kernel); %calculate new distances
+        newClassAssignments = CalculateClassAssignments(distances); %make new classAssignments
         ClassAssignmentsChanged = IsClassAssignmentsChanged(...
             newClassAssignments,classAssignments);
         classAssignments=newClassAssignments;
-        if nnz(iterationCounter==retrieveDataAt)
-            classAt{1,numel(classAt)+1}=iterationCounter;
-            classAt{2,numel(classAt)+1}=classAssignments;
+        
+        if retrieveDataAt > 0 && nnz(iterationCounter==retrieveDataAt)
+            classAt{1,numel(classAt)+1}=iterationCounter; % do whatever you
+            classAt{2,numel(classAt)+1}=classAssignments; % want here Axel
         end
     end
     
@@ -38,30 +56,18 @@ function [ClassAssignmentsChanged] = IsClassAssignmentsChanged(...
     ClassAssignmentsChanged=isequal(newClassAssignment,classAssignment);
 end
 
-%implement. TODO
-function [distances] = GetDistances(k,data,classAssignments,kernel)
+function [distances] = GetDistances(K,data,classAssignments,kernel)
     nData=size(data,2);
-    distances=zeros(k,nData);
-    %generate K-matrix
-    K=zeros(nData);
-    for i=1:nData
-        for j=1:nData
-            K(i,j)=kernel(data(:,i),data(:,j));
-            
-        end
-    end
-    
-    Z=zeros(nData,k);
-    for c=1:numel(classAssignments)
-        Z(c,classAssignments(c))=1;
-    end
-    
+    distances=zeros(K,nData);
+    kMatrix = feval(kernel, data, data);
+
     for n=1:nData
-        for k_=1:k
-            %implement.
-            distances(n,k_)=K(n,n)...
-                -2*(1/N)*dot(K(k_,:), Z(:,k_)) + ;
+        for k=1:K
+            N_k = sum(classAssignments == k);
+            distances(k,n) = kMatrix(n,n) - ...
+                2/N_k*(kMatrix(n,:)*(classAssignments == k)') +...
+                1/(N_k^2)*sum(sum((classAssignments == k)'.*...
+                (classAssignments == k).*kMatrix));
         end
     end
-        
 end
