@@ -59,15 +59,15 @@ end
 function [distances] = GetDistances(K,data,classAssignments,kernel)
     nData=size(data,2);
     distances=zeros(K,nData);
-    kMatrix = feval(kernel, data, data);
+    kMatrix = feval(kernel, data);
 
     for n=1:nData
         for k=1:K
-            N_k = sum(classAssignments == k);
+            Z = (classAssignments == k);
+            N_k = sum(Z);
             distances(k,n) = kMatrix(n,n) - ...
-                2/N_k*(kMatrix(n,:)*(classAssignments == k)') +...
-                1/(N_k^2)*sum(sum((classAssignments == k)'.*...
-                (classAssignments == k).*kMatrix));
+                2/N_k*(kMatrix(n,:)*Z') +...
+                1/(N_k^2)*sum(sum(Z'.*Z.*kMatrix));
         end
     end
 end
