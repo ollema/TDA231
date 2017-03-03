@@ -9,12 +9,17 @@ initClass = randi(1:k, 1, size(X,2));
 
 % profile on
 tic
-kmc = KMeansCluster(k, 'linear_kernel', X, initClass, 'UpdatePlot', false, 'RetrieveData', 2);
+[kmc,kmc_earlyData] = KMeansCluster(k, 'linear_kernel', X,...
+    initClass, 'UpdatePlot', false, 'RetrieveData', 2);
 toc
-gscatter(X(1,:), X(2,:), kmc{2,1})
-
 % profile viewer
-
+% plotting of data (correct)
+clf
+hold on
+pointsChangedIdx=(kmc{2,1}~=kmc_earlyData{2,1});
+gscatter(X(1,:), X(2,:), kmc{2,1})
+plot(X(1,pointsChangedIdx),X(2,pointsChangedIdx),'diamondk','MarkerSize',9)
+title('Class assignments')
 %% d)
 clc, clear
 data = load('hw5_p1b.mat');
@@ -24,11 +29,23 @@ initClass = randi(1:k, 1, size(X,2));
 
 % profile on
 tic
-kmc = KMeansCluster(k, 'rbf_kernel', X, initClass, 'UpdatePlot', false);
+kmc_rbfKernel = KMeansCluster(k, 'rbf_kernel', X, initClass, 'UpdatePlot', false);
+kmc_linearKernel=KMeansCluster(k, 'linear_kernel', X, initClass, 'UpdatePlot', false);
 toc
-gscatter(X(1,:), X(2,:), kmc{2,1})
+clf
+
+%gscatter(X(1,:), X(2,:), kmc_rbfKernel{2,1})
 
 % profile viewer
+
+% plotting of data
+clf
+subplot(1,2,1)
+gscatter(X(1,:), X(2,:), kmc_rbfKernel{2,1})
+title('RBF kernel');
+subplot(1,2,2)
+gscatter(X(1,:), X(2,:), kmc_linearKernel{2,1})
+title('Linear kernel')
 
 
 %% Problem 1.2 a)
@@ -43,7 +60,8 @@ wordemb = data.wordembeddings;
 clc
 [~, I] = sort(D);
 closestWords = vocab(I(1:10,:));
-disp(closestWords)
+%disp(closestWords)
+
 
 %% b) 
 clc, clear D, clear closestWords, clear I
@@ -99,6 +117,7 @@ initial_dims = 100;
 perplexity = 30;
 % Run t−SNE
 mappedX = tsne(sliceOfWordemb, [], no_dims, initial_dims, perplexity);
-
-% Plot results
-gscatter(mappedX(:,1), mappedX(:,2), idx);
+%%
+clc
+h=gscatter(mappedX(:,1), mappedX(:,2), idx);
+set(h,'MarkerSize',13)

@@ -1,25 +1,25 @@
-function [out] = KMeansCluster(k,kernel,data, initClassAssignments,varargin)
+function [out,dataAt] = KMeansCluster(k,kernel,data, initClassAssignments,varargin)
     % defaults
-    update = false;
+    updateEnabled = false;
     retrieveDataAt = 0;
 
     % parse arguments
     for i=1:2:length(varargin)
         switch varargin{i}
         case 'UpdatePlot'
-            update = varargin{i+1};
+            updateEnabled = varargin{i+1};
         case 'RetrieveData'
             retrieveDataAt = varargin{i+1};
         end
     end
 
     classAssignments=initClassAssignments;
-    ClassAssignmentsChanged = 0;
-    classAt = cell(0);
+    ClassAssignmentsChanged = true;
+    dataAt = cell(0);
     iterationCounter = 0;
     
-    while iterationCounter < 100 && ClassAssignmentsChanged == 0
-        if update == true
+    while ClassAssignmentsChanged
+        if updateEnabled
             gscatter(data(1,:), data(2,:), classAssignments)
             drawnow
         end
@@ -31,9 +31,9 @@ function [out] = KMeansCluster(k,kernel,data, initClassAssignments,varargin)
             newClassAssignments,classAssignments);
         classAssignments=newClassAssignments;
         
-        if retrieveDataAt > 0 && nnz(iterationCounter==retrieveDataAt)
-            classAt{1,numel(classAt)+1}=iterationCounter; % do whatever you
-            classAt{2,numel(classAt)+1}=classAssignments; % want here Axel
+        if retrieveDataAt == iterationCounter
+            dataAt{1,1}=iterationCounter;
+            dataAt{2,1}=classAssignments;
         end
     end
     
@@ -51,7 +51,7 @@ end
 
 function [ClassAssignmentsChanged] = IsClassAssignmentsChanged(...
     newClassAssignment,classAssignment)
-    ClassAssignmentsChanged=isequal(newClassAssignment,classAssignment);
+    ClassAssignmentsChanged=not(isequal(newClassAssignment,classAssignment));
 end
 
 function [distances] = GetDistances(K,data,classAssignments,kernel)
@@ -68,4 +68,5 @@ function [distances] = GetDistances(K,data,classAssignments,kernel)
                 1/(N_k^2)*sum(sum(Z'.*Z.*kMatrix));
         end
     end
+    
 end
