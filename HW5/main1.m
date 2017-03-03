@@ -83,6 +83,22 @@ f_avg = f/repetitions;
 fprintf('F = %.3f \n',f_avg)
 
 %% c)
+% Load data
+clc
+data = load('medium_100_10k.mat');
+wordemb = data.wordembeddings;
+k = 10;
+sliceOfWordemb = wordemb(randperm(10000, 1000), :);
+
+[idx,D,depth] = kmeansWrapper(sliceOfWordemb, k, 1);
 
 
+% Set parameters
+no_dims = 2;
+initial_dims = 100;
+perplexity = 30;
+% Run t−SNE
+mappedX = tsne(sliceOfWordemb, [], no_dims, initial_dims, perplexity);
 
+% Plot results
+gscatter(mappedX(:,1), mappedX(:,2), idx);
