@@ -5,7 +5,7 @@ clc, clear
 data = load('hw5_p1a.mat');
 X = data.X';
 k = 2;
-initClass = randi(1:k, 1, size(X,2));
+initClass = InitializeClasses(X,k);
 
 % profile on
 tic
@@ -20,12 +20,13 @@ pointsChangedIdx=(kmc{2,1}~=kmc_earlyData{2,1});
 gscatter(X(1,:), X(2,:), kmc{2,1})
 plot(X(1,pointsChangedIdx),X(2,pointsChangedIdx),'diamondk','MarkerSize',9)
 title('Class assignments')
+disp(kmc{1,1})
 %% d)
 clc, clear
 data = load('hw5_p1b.mat');
 X = data.X';
 k = 2;
-initClass = randi(1:k, 1, size(X,2));
+initClass = randi(k, 1, size(X,2));
 
 % profile on
 tic
